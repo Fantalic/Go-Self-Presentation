@@ -1,0 +1,64 @@
+#introduction-en
+Hello, this is a little GO-Program that I wrote to intruduce myself and show a bit of 
+my skills at the same time. You can choose what you want to know about me.
+
+>> about me:about-me
+>> CV:file:CV.pdf
+>> Projects:projects
+>> Passion and Intrests:interests
+>> exit:exit
+
+#about-me
+I am a programmer 
+
+>> go back:introduction-en
+
+#list-lost
+- Unity3d game projects; one including our solar system with planet textures on spheres, 
+  accurate size relation, speed and orbit.
+- Vst plugin for DAW project (simple filter and volume manipulation)
+  old text in and output game with C++ (trading simulation + story )
+- and more ... :(
+
+>> go back:projects
+
+#projects 
+Projects:
+
+>> lua game (love2d):git
+>> Vue Pizza Maker:git
+>> Pyton Rest API:git
+>> npm monorepro:git 
+>> lost Projects:list-lost
+>> go back:introduction-en
+
+
+#git 
+www.wilke.git.com
+
+>> go back:projects
+
+#interests
+interests:
+
+>> music:music
+>> taiji Quan (martial art):taiji 
+>> culture:culture
+>> go back:introduction-en
+
+#music
+I make music: www.soundcloud.com 
+
+>> go back:interests
+
+#taiji
+I train taiji quan
+
+>> go back:interests
+
+#culture
+I love culture 
+
+>> go back:interests
+
+the end
