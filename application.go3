@@ -1,0 +1,41 @@
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"os"
+)
+
+func main() {
+	lines := []string{"line1", "line2", "line3"}
+	plusSigns := make([]int, len(lines))
+
+	reader := bufio.NewReader(os.Stdin)
+
+	for {
+		fmt.Print("\033[H\033[2J") // clear the screen
+		for i, line := range lines {
+			fmt.Printf("%d: %s", i+1, line)
+			for j := 0; j < plusSigns[i]; j++ {
+				fmt.Print("+")
+			}
+			fmt.Println()
+		}
+
+		fmt.Print("Enter +n to add a plus sign to line n, or 'q' to quit: ")
+		input, _ := reader.ReadString('\n')
+		input = input[:len(input)-1] // remove newline character
+
+		if input == "q" {
+			break
+		}
+
+		// parse input as "+n"
+		var n int
+		if _, err := fmt.Sscanf(input, "+%d", &n); err == nil {
+			if n > 0 && n <= len(lines) {
+				plusSigns[n-1]++
+			}
+		}
+	}
+}

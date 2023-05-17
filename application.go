@@ -6,76 +6,28 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+	"time"
+
+	"runtime"
 
 	"github.com/eiannone/keyboard"
-	//"github.com/inancgumus/screen"
+	"github.com/gosuri/uilive"
 )
 
-// func selectOptions(options []string) string {
-// 	if err := keyboard.Open(); err != nil {
-// 		panic(err)
-// 	}
-// 	defer func() {
-// 		_ = keyboard.Close()
-// 	}()
+var text string = ""
 
-// 	var printOptions func([]string, int)
-// 	selectedOption := 0
+func clearConsole() {
+	var cmd *exec.Cmd
+	if runtime.GOOS == "windows" {
+		cmd = exec.Command("cmd", "/c", "cls")
+	} else {
+		cmd = exec.Command("clear")
+	}
+	cmd.Stdout = os.Stdout
+	cmd.Run()
+}
 
-// 	printOptions = func(options []string, selectedOption int) {
-// 		// Print the list of options
-// 		for i, option := range options {
-// 			if i == selectedOption {
-// 				fmt.Printf("# %s\n", strings.Split(option, ":")[0])
-// 			} else {
-// 				fmt.Printf("  %s\n", strings.Split(option, ":")[0])
-// 			}
-// 		}
-// 	}
-
-// 	// Print the list of options
-// 	printOptions(options, selectedOption)
-
-// 	// Wait for user input
-// 	for {
-// 		_, key, err := keyboard.GetKey()
-// 		if err != nil {
-// 			fmt.Println(err)
-// 			return "ERROR"
-// 		}
-
-// 		// Update the selected option based on user input
-// 		switch {
-// 		case key == keyboard.KeyArrowUp:
-// 			if selectedOption > 0 {
-// 				selectedOption--
-// 				fmt.Printf("\033[1A\033[K") // clear the previous line
-// 			}
-// 		case key == keyboard.KeyArrowDown:
-// 			if selectedOption < len(options)-1 {
-// 				selectedOption++
-// 				fmt.Printf("\033[1A\033[K") // clear the previous line
-// 			}
-// 		case key == 13: // Enter key
-// 			// clear all the option lines
-// 			for i := range options {
-// 				i += 1
-// 				i -= 1
-// 				fmt.Printf("\033[1A\033[K")
-// 			}
-// 			// move the cursor to the first line of the options
-// 			fmt.Printf("\033[%dA", len(options))
-// 			return options[selectedOption]
-// 		}
-
-// 		// print the updated options
-// 		fmt.Printf("\033[%dA", len(options)+1) // move the cursor to the first line of the options
-// 		printOptions(options, selectedOption)
-// 	}
-
-// }
-
-func selectOptions(options []string) string {
+func selectOptions(options []string, writer *uilive.Writer) string {
 	if err := keyboard.Open(); err != nil {
 		panic(err)
 	}
@@ -87,14 +39,17 @@ func selectOptions(options []string) string {
 	selectedOption := 0
 
 	printOptions = func(options []string, selectedOption int) {
+		fmt.Fprintf(writer.Newline(), text)
 		// Print the list of options
 		for i, option := range options {
 			if i == selectedOption {
-				fmt.Printf("# %s\n", strings.Split(option, ":")[0])
+				fmt.Fprintln(writer.Newline(), fmt.Sprintf("# %s ", strings.Split(option, ":")[0]))
+				//color.New(color.Bold, color.FgGreen).Fprintln(writer.Newline(), "# %s\n ", strings.Split(option, ":")[0])
 			} else {
-				fmt.Printf("  %s\n", strings.Split(option, ":")[0])
+				fmt.Fprintln(writer.Newline(), fmt.Sprintf("  %s", strings.Split(option, ":")[0]))
 			}
 		}
+		writer.Flush()
 	}
 
 	// Print the list of options
@@ -113,13 +68,17 @@ func selectOptions(options []string) string {
 		case key == keyboard.KeyArrowUp:
 			if selectedOption > 0 {
 				selectedOption--
-				printOptions(options, selectedOption)
+			} else if selectedOption <= 0 {
+				selectedOption = len(options) - 1
 			}
+			printOptions(options, selectedOption)
 		case key == keyboard.KeyArrowDown:
 			if selectedOption < len(options)-1 {
 				selectedOption++
-				printOptions(options, selectedOption)
+			} else if selectedOption > len(options)-2 {
+				selectedOption = 0
 			}
+			printOptions(options, selectedOption)
 		case key == 13: // Enter key
 			return options[selectedOption]
 		}
@@ -152,8 +111,10 @@ func main() {
 
 	lineIdx := 0
 	var entryIndices = map[string]int{}
-	var text string = ""
 	var entryPoint string = ""
+
+	var writer = uilive.New()
+	writer.RefreshInterval = time.Hour
 
 	for {
 		if lineIdx >= len(lines) {
@@ -174,20 +135,24 @@ func main() {
 			lineIdx++
 		}
 		// when option found, print the text
-		if strings.Index(lines[lineIdx], ">> ") >= 0 {
-			fmt.Print(text)
-		}
 		// check if is a option ( when the first option appears, it is the end of the above text)
+
 		var options []string
+
 		for {
 			// step through text input to check for options after a discription text.
 			// after no option is found anymore, run the selectOptions function to await input from user.
+
 			if strings.Index(lines[lineIdx], ">> ") >= 0 {
 				option := strings.Trim(lines[lineIdx], ">> ")
 				options = append(options, option)
+
 				lineIdx++
 			} else if options != nil {
-				selected := selectOptions(options)
+				writer.Start()
+				selected := selectOptions(options, writer)
+				writer.Stop()
+				clearConsole()
 				// check what the selected option referces to (text or file)
 				slice := strings.Split(selected, ":")
 				if slice[1] == "file" {
