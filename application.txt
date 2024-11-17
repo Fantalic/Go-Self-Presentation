@@ -3,7 +3,7 @@ Hello, this is a little GO-Program that I wrote to intruduce myself and show a b
 my skills at the same time. You can choose what you want to know about me.
 
 >> about me:about-me
->> CV:file:CV.pdf
+>> CV:load:CV.txt
 >> Projects:projects
 >> Passion and Intrests:interests
 >> exit:exit

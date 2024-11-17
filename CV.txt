@@ -1,0 +1,77 @@
+================================================================================
+                               Curriculum Vitae
+                                  Fantalic
+                             GitHub: https://github.com/Fantalic
+================================================================================
+
+EDUCATION
+--------------------------------------------------------------------------------
+2004--2007: Higher School Certificate, BBS2 Aurich
+    Focus: IT education
+
+2008: Internship, DubCity, Bremen
+    Tasks: Various tasks in the music studio
+
+2009--2016: B.Eng., Jade Hochschule, Oldenburg
+    Field: Audiologie und Hörtechnik 
+    Subjects: Signal processing, electrical engineering, studio engineering (no graduation)
+
+2017--2018: Apprenticeship (2 years), ERPWerk GmbH
+    Position: Software Developer training
+
+--------------------------------------------------------------------------------
+VOCATIONAL EXPERIENCE
+--------------------------------------------------------------------------------
+2011-2016: Software Developer (Python), itap - Institut für technische und angewandte Physik GmbH, Oldenburg
+    - Participated in implementation of data processing infrastructure.
+
+2017--2019: Software Developer (Delphi, JS), ERPWerk GmbH, Oldenburg
+    - Various software updates to newest Delphi version; additions to customers' software.
+    - ReactJS components for big web project including simulated server network via Docker.
+
+2019--2022: Software Developer (Delphi, TypeScript), Amirada GmbH, Berlin
+    - Sole developer of PIM/data hub software core in Delphi; PO for web application UI.
+    - Setting up npm monorepo and npm repository for company's NodeJS projects; REST API services (TypeScript, Express); SAP interface in Delphi.
+
+2023: Software Developer (C#, TypeScript), digitalklang GmbH, Berlin
+    - ASP.NET Boilerplate backend.
+    - Angular web application.
+
+2024: Software Developer (C++, TypeScript), deersoft GmbH, Berlin
+    - Multi-threading core application with real-time structural analysis in C++.
+    - Electron ReactJS UI for the core application.
+
+--------------------------------------------------------------------------------
+PROGRAMMING SKILLS
+--------------------------------------------------------------------------------
+JavaScript/TypeScript: 5 - Front and back-end development with VueJs, React, Express and others.
+HTML/CSS: 4 - Designing single page web applications and more.
+Delphi: 4 - Developing ERP systems; back-end development (SOAP, REST).
+C/C++: 4 - Multi-platform core library; DSP, game and VST development.
+C#: 4 - Developing back-end with Entity Framework.
+Python: 3 - AI technologies, GUI and back-end development (Qt, Django).
+Lua: 3 - Used as script language for Delphi; own game development project.
+Others: Java, C#, Go, LaTeX, MatLab.
+
+--------------------------------------------------------------------------------
+DATABASES, FRAMEWORKS, SOFTWARE AND TOOLS
+--------------------------------------------------------------------------------
+Front-End: 5 - VueJs (Nuxt), Angular, ReactJs.
+Back-End: 5 - Delphi, C++, C# (ASP.NET Boilerplate), JS (Express, Electron).
+AI: 3 - Own RAG project (llama-index, Ollama, pandas); online courses.
+Game Dev: 3 - Unity3D, LÖVE, raylib.
+Databases: Qdrant, MongoDB, MSSQL, SQLite, MySQL, PostgreSQL, MariaDB.
+Others: Docker, Elasticsearch, Bootstrap, Plesk, SAP and more.
+
+--------------------------------------------------------------------------------
+OTHER SKILLS
+--------------------------------------------------------------------------------
+Linux: WSL, Plesk, Docker.
+Math: Passed higher math classes in university; able to implement complex math formulas in code; process signals.
+
+--------------------------------------------------------------------------------
+INTERESTS
+--------------------------------------------------------------------------------
+Technology, music, martial arts, philosophy.
+
+================================================================================

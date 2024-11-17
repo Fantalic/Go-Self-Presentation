@@ -5,10 +5,9 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"runtime"
 	"strings"
 	"time"
-
-	"runtime"
 
 	"github.com/eiannone/keyboard"
 	"github.com/gosuri/uilive"
@@ -35,10 +34,8 @@ func selectOptions(options []string, writer *uilive.Writer) string {
 		_ = keyboard.Close()
 	}()
 
-	var printOptions func([]string, int)
-	selectedOption := 0
-
-	printOptions = func(options []string, selectedOption int) {
+	var selectedOption = 0
+	var printOptions = func(options []string, selectedOption int) {
 		fmt.Fprintf(writer.Newline(), text)
 		// Print the list of options
 		for i, option := range options {
@@ -68,7 +65,7 @@ func selectOptions(options []string, writer *uilive.Writer) string {
 		case key == keyboard.KeyArrowUp:
 			if selectedOption > 0 {
 				selectedOption--
-			} else if selectedOption <= 0 {
+			} else if selectedOption <= 1 {
 				selectedOption = len(options) - 1
 			}
 			printOptions(options, selectedOption)
@@ -102,6 +99,8 @@ func FileToLines(filePath string) (lines []string, err error) {
 }
 
 func main() {
+	// TODO: figure out a way to only replace certain lines in the console
+	clearConsole()
 	// load input file
 	lines, err := FileToLines("application.txt")
 	if err != nil {
@@ -115,6 +114,10 @@ func main() {
 
 	var writer = uilive.New()
 	writer.RefreshInterval = time.Hour
+
+	/// ---------------------------------------------------
+	///  APPLICATION LOOP ... CONTROLLED BY application.txt
+	/// ---------------------------------------------------
 
 	for {
 		if lineIdx >= len(lines) {
@@ -138,7 +141,6 @@ func main() {
 		// check if is a option ( when the first option appears, it is the end of the above text)
 
 		var options []string
-
 		for {
 			// step through text input to check for options after a discription text.
 			// after no option is found anymore, run the selectOptions function to await input from user.
@@ -168,6 +170,49 @@ func main() {
 					if err != nil {
 						fmt.Println("ERROR")
 					}
+				} else if slice[1] == "load" {
+					file, err := os.Open(slice[2])
+					if err != nil {
+						fmt.Println("ERROR")
+					}
+					// Create a new scanner to read the file line by line
+					scanner := bufio.NewScanner(file)
+
+					lineCount := 0
+					count := 1
+					for scanner.Scan() {
+						fmt.Println(scanner.Text())
+						if lineCount >= 30*count {
+							count++
+							// fmt.Println("                                                           ===> ")
+							// wait for user input
+							fmt.Println("  ")
+							fmt.Println("  ")
+							fmt.Println(" <<<< Enter to continue >>>> ")
+							fmt.Println("  ")
+							fmt.Println("  ")
+							var input string
+							fmt.Scanln(&input)
+						}
+						lineCount++
+					}
+					// Check for errors during scanning
+					if err := scanner.Err(); err != nil {
+						fmt.Println("Error reading file:", err)
+					} else {
+						// EOF reached..
+						fmt.Println("  ")
+						fmt.Println("  ")
+						fmt.Println(" <<<< EOF>>>> ")
+						fmt.Println("  ")
+						fmt.Println("  ")
+					}
+
+					var input string
+					fmt.Scanln(&input)
+					clearConsole()
+
+					defer file.Close()
 				} else if slice[1] == "exit" {
 					// execute a command
 					return
